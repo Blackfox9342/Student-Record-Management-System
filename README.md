@@ -1,4 +1,4 @@
-# Prakash University Academic Record Management System
+# student University Academic Record Management System
 
 A phase-based university ERP starter built with Flask, MySQL-ready SQLAlchemy models, Bootstrap 5, Chart.js, ReportLab, and OpenPyXL.
 
