@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Student University | Login{% endblock %}
+{% block content %}
+<div class="row justify-content-center align-items-stretch g-4">
+  <div class="col-lg-5">
+    <div class="login-panel h-100">
+      <span class="eyebrow">Secure Access</span>
+      <h1 class="section-title mt-2">Choose the portal that matches your role.</h1>
+      <p class="text-white-50">Student and faculty logins are separated for clarity. Admin access is available from the same account system.</p>
+      <div class="portal-list mt-4">
+        <a class="portal-chip {{ 'active' if active_role == 'student' else '' }}" href="{{ url_for('auth.login', role='student') }}">Student Login</a>
+        <a class="portal-chip {{ 'active' if active_role == 'faculty' else '' }}" href="{{ url_for('auth.login', role='faculty') }}">Faculty Login</a>
+        <a class="portal-chip {{ 'active' if active_role == 'admin' else '' }}" href="{{ url_for('auth.login', role='admin') }}">Admin Access</a>
+      </div>
+      <div class="credential-card mt-4">
+        <p class="mb-2 text-uppercase text-muted small">Demo credentials</p>
+        <div class="small text-white-50">Student: student@studentuniversity.edu / Student@123</div>
+        <div class="small text-white-50">Faculty: faculty@studentuniversity.edu / Faculty@123</div>
+        <div class="small text-white-50">Admin: admin@studentuniversity.edu / Admin@123</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="glass-panel login-form-shell h-100">
+      <div class="panel-header mb-4">
+        <div>
+          <p class="text-uppercase text-muted mb-1">{{ active_role|title }} Portal</p>
+          <h2 class="h3 mb-0">Sign in to Student University</h2>
+        </div>
+        <span class="status-pill status-soft">Protected</span>
+      </div>
+      <form method="post" class="stack-form">
+        <input type="hidden" name="role" value="{{ active_role }}">
+        <div class="mb-3">
+          <label class="form-label">Email address</label>
+          <input type="email" class="form-control form-control-lg" name="email" placeholder="name@studentuniversity.edu" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control form-control-lg" name="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg w-100">Continue</button>
+      </form>
+      <div class="mt-4 text-center text-white-50 small">
+        New phase modules will reuse this login without changing the user journey.
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

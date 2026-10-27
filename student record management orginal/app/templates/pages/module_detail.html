@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}Student University | {{ module.title }}{% endblock %}
+{% block content %}
+<div class="glass-panel module-shell">
+  <div class="panel-header flex-wrap mb-3">
+    <div>
+      <span class="eyebrow">{{ role|title }} Module</span>
+      <h1 class="section-title mb-2">{{ module.title }}</h1>
+      <p class="text-white-50 mb-0">{{ module.description }}</p>
+    </div>
+    <span class="status-pill">{{ module.status }}</span>
+  </div>
+
+  <div class="row g-4 mb-2">
+    {% for stat in module.stats %}
+      <div class="col-md-6 col-xl-3">
+        <div class="surface-card h-100 module-stat-card">
+          <small>{{ stat.label }}</small>
+          <h3 class="mt-2">{{ stat.value }}</h3>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="row g-4 mt-1">
+    <div class="col-lg-4">
+      <div class="surface-card h-100">
+        <h2 class="h5 mb-3">Module info</h2>
+        <ul class="workflow-list mb-0">
+          <li>Owner: {{ module.owner }}</li>
+          <li>Last updated: {{ module.updated_at }}</li>
+          <li>Role: {{ role|title }}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="surface-card h-100">
+        <h2 class="h5 mb-3">Highlights</h2>
+        <ul class="workflow-list mb-0">
+          {% for point in module.highlights %}
+            <li>{{ point }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-panel mt-4">
+    <div class="panel-header mb-3">
+      <h2 class="h5 mb-0">Detailed records</h2>
+      {% if role == 'student' %}
+        <div class="action-row">
+          <a class="btn btn-sm btn-outline-light" href="{{ url_for('main.student_marksheet_pdf') }}">Marksheet PDF</a>
+          <a class="btn btn-sm btn-outline-light" href="{{ url_for('main.student_marksheet_excel') }}">Marksheet Excel</a>
+        </div>
+      {% elif role == 'faculty' %}
+        <a class="btn btn-sm btn-outline-light" href="{{ url_for('main.faculty_class_list_pdf') }}">Class list PDF</a>
+      {% elif role == 'admin' %}
+        <a class="btn btn-sm btn-outline-light" href="{{ url_for('main.admin_report_excel') }}">Institution Excel</a>
+      {% endif %}
+    </div>
+    <div class="table-responsive">
+      <table class="table table-dark table-borderless align-middle mb-0 dashboard-table">
+        <thead>
+          <tr>
+            {% for col in module.columns %}
+              <th>{{ col }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in module.rows %}
+            <tr>
+              {% for value in row %}
+                <td>{{ value }}</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {% if module.ledger_blocks is defined %}
+    <div class="glass-panel mt-4">
+      <div class="panel-header mb-3">
+        <div>
+          <h2 class="h5 mb-1">Blockchain integrity ledger</h2>
+          <p class="text-white-50 mb-0">Each academic record is linked to the previous record with a SHA-256 hash.</p>
+        </div>
+        <span class="status-pill {% if not module.ledger_valid %}text-bg-danger{% endif %}">
+          {% if module.ledger_valid %}Verified{% else %} tampered {% endif %}
+        </span>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-dark table-borderless align-middle mb-0 dashboard-table">
+          <thead>
+            <tr><th>Block</th><th>Record</th><th>Previous hash</th><th>Block hash</th></tr>
+          </thead>
+          <tbody>
+            {% for block in module.ledger_blocks %}
+              <tr>
+                <td>{{ block.block_index }}</td>
+                <td>{{ block.record_type|title }}: {{ block.record_key }}</td>
+                <td><code>{{ block.previous_hash[:12] }}...</code></td>
+                <td><code>{{ block.block_hash[:12] }}...</code></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="quick-links-grid three-col mt-4">
+    <a class="action-card action-link" href="{{ url_for('main.home') }}">Home</a>
+    <a class="action-card action-link" href="{{ url_for('main.' + role + '_dashboard') }}">Back to {{ role|title }} Dashboard</a>
+    <a class="action-card action-link" href="{{ url_for('auth.logout') }}">Logout</a>
+  </div>
+</div>
+{% endblock %}

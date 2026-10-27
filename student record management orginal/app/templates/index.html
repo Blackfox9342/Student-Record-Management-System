@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Student University | University ERP{% endblock %}
+{% block content %}
+<section class="hero-shell">
+  <div class="row align-items-center gy-5">
+    <div class="col-lg-7">
+      <span class="eyebrow">University ERP Platform</span>
+      <h1 class="display-4 fw-bold hero-title">A polished academic record system for students, faculty, and administrators.</h1>
+      <p class="lead hero-copy">Student University brings admissions, attendance, marks, GPA, transcripts, and reports into one clean workflow built for real campus operations.</p>
+      <div class="d-flex flex-wrap gap-3 mt-4">
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg px-4">Open Login Portal</a>
+        <a href="#features" class="btn btn-outline-light btn-lg px-4">Explore Features</a>
+      </div>
+      <div class="mini-stats mt-5">
+        <div class="stat-card"><span>18</span><small>core tables</small></div>
+        <div class="stat-card"><span>3</span><small>role dashboards</small></div>
+        <div class="stat-card"><span>100%</span><small>phase-ready</small></div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="glass-panel hero-panel">
+        <div class="panel-header">
+          <div>
+            <p class="text-uppercase text-muted mb-1">Live Snapshot</p>
+            <h2 class="h4 mb-0">Campus Performance</h2>
+          </div>
+          <span class="status-pill">Online</span>
+        </div>
+        <div class="metric-grid mt-4">
+          <div class="metric-tile">
+            <span>1,248</span>
+            <small>Students</small>
+          </div>
+          <div class="metric-tile">
+            <span>84</span>
+            <small>Faculty</small>
+          </div>
+          <div class="metric-tile">
+            <span>42</span>
+            <small>Subjects</small>
+          </div>
+          <div class="metric-tile">
+            <span>96%</span>
+            <small>Attendance</small>
+          </div>
+        </div>
+        <div class="timeline mt-4">
+          <div class="timeline-item"><i class="bi bi-check2-circle"></i><span>Registration complete</span></div>
+          <div class="timeline-item"><i class="bi bi-check2-circle"></i><span>Marks imported</span></div>
+          <div class="timeline-item"><i class="bi bi-check2-circle"></i><span>Transcript ready</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="mt-5 pt-4">
+  <div class="section-heading">
+    <span class="eyebrow">Core Modules</span>
+    <h2 class="section-title">Everything needed for an academic record platform, organized by workflow.</h2>
+  </div>
+  <div class="row g-4 mt-1">
+    {% for title, text, icon in [
+      ('Student Management', 'Registration, profile, photo upload, search, update, delete, and history.', 'bi-person-badge'),
+      ('Faculty Management', 'Faculty records, subject assignment, attendance, and marks entry.', 'bi-mortarboard'),
+      ('Attendance', 'Daily attendance, defaulter lists, and percentage calculations.', 'bi-calendar-check'),
+      ('Marks & GPA', 'CAT, assignment, lab, exam, grades, GPA, and CGPA calculations.', 'bi-graph-up-arrow'),
+      ('Reports', 'Marksheet, transcript, PDF, Excel export, topper list, and department reports.', 'bi-file-earmark-text'),
+      ('Security', 'Role-based login, hashing, and audit logs.', 'bi-shield-lock')
+    ] %}
+      <div class="col-md-6 col-xl-4">
+        <article class="feature-card h-100">
+          <div class="feature-icon"><i class="bi {{ icon }}"></i></div>
+          <h3 class="h5 mt-4">{{ title }}</h3>
+          <p class="text-white-50 mb-0">{{ text }}</p>
+        </article>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="mt-5 pt-4">
+  <div class="roadmap-box">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <span class="eyebrow">Project Roadmap</span>
+        <h2 class="section-title mb-3">Phase 1 is live: intro page, role login, and dashboard shells.</h2>
+        <p class="text-white-50 mb-0">The next phases can layer student, faculty, academic, attendance, marks, and reporting modules without changing the overall structure.</p>
+      </div>
+      <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+        <a href="{{ url_for('auth.login') }}" class="btn btn-light btn-lg">Enter Portal</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

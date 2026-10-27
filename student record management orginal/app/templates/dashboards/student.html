@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Student University | Student Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-header mb-4">
+  <div>
+    <span class="eyebrow">Student Dashboard</span>
+    <h1 class="section-title mb-0">Academic snapshot</h1>
+    <p class="text-white-50 mb-0">Hello, {{ current_user.full_name }}. Review marks, attendance, and academic history from one clean screen.</p>
+  </div>
+  <a class="btn btn-outline-light" href="{{ url_for('auth.logout') }}">Logout</a>
+</div>
+<div class="row g-4">
+  {% for label, value, meta in [('Semester GPA', '8.72', 'Current term'), ('Attendance', '97%', 'Healthy'), ('Pending Tasks', '3', 'Action required'), ('Rank', '12', 'Department rank')] %}
+    <div class="col-md-6 col-xl-3">
+      <div class="surface-card h-100">
+        <small>{{ label }}</small>
+        <h3 class="mt-2">{{ value }}</h3>
+        <p class="text-white-50 mb-0">{{ meta }}</p>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+<div class="row g-4 mt-1">
+  <div class="col-lg-8">
+    <div class="glass-panel h-100">
+      <div class="panel-header flex-wrap">
+        <h2 class="h5 mb-0">Recent marks</h2>
+        <div class="action-row">
+          <a class="btn btn-sm btn-outline-light" href="{{ url_for('main.student_marksheet_pdf') }}">Download PDF</a>
+          <a class="btn btn-sm btn-outline-light" href="{{ url_for('main.student_marksheet_excel') }}">Download Excel</a>
+          <a class="btn btn-sm btn-light" href="{{ url_for('main.student_transcript_pdf') }}">Transcript</a>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-dark table-borderless align-middle mb-0 dashboard-table">
+          <thead><tr><th>Subject</th><th>CAT 1</th><th>CAT 2</th><th>Assignment</th><th>Total</th><th>Grade</th></tr></thead>
+          <tbody>
+            {% for row in marks %}
+              <tr><td>{{ row.subject }}</td><td>{{ row.cat1 }}</td><td>{{ row.cat2 }}</td><td>{{ row.assignment }}</td><td>{{ row.total }}</td><td>{{ row.grade }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="glass-panel h-100">
+      <div class="panel-header mb-3">
+        <h2 class="h5 mb-0">Quick access</h2>
+      </div>
+      <div class="quick-links-grid">
+        {% for module in quick_modules %}
+          <a class="action-card action-link" href="{{ url_for('main.module_detail', role='student', module_slug=module.slug) }}">{{ module.title }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row g-4 mt-1">
+  <div class="col-lg-12">
+    <div class="glass-panel h-100">
+      <div class="panel-header mb-3">
+        <h2 class="h5 mb-0">Attendance summary</h2>
+        <a class="btn btn-sm btn-outline-light" href="{{ url_for('main.student_attendance') }}">Open full report</a>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-dark table-borderless align-middle mb-0 dashboard-table">
+          <thead><tr><th>Subject</th><th>Status</th><th>Attendance</th></tr></thead>
+          <tbody>
+            {% for row in attendance %}
+              <tr><td>{{ row[0] }}</td><td>{{ row[1] }}</td><td>{{ row[2] }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row g-4 mt-1">
+  <div class="col-lg-12">
+    <div class="glass-panel h-100">
+      <div class="panel-header mb-3">
+        <h2 class="h5 mb-0">All student options ({{ all_modules|length }})</h2>
+      </div>
+      <div class="quick-links-grid three-col">
+        {% for module in all_modules %}
+          <a class="action-card action-link" href="{{ url_for('main.module_detail', role='student', module_slug=module.slug) }}">
+            <span class="module-name">{{ module.title }}</span>
+            <small class="module-meta">{{ module.status }}</small>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row g-4 mt-1">
+  <div class="col-lg-12">
+    <div class="glass-panel h-100">
+      <div class="panel-header mb-3">
+        <h2 class="h5 mb-0">Module Books (1 to 7)</h2>
+        <span class="status-pill">PDF Download</span>
+      </div>
+      <p class="text-white-50 mb-3">Click any module to download its module book with topics and reference books.</p>
+      <div class="quick-links-grid three-col">
+        {% for module_no, module_info in module_books %}
+          <a class="action-card action-link" href="{{ url_for('main.student_module_download', module_no=module_no) }}">
+            <span class="module-name">Module {{ module_no }}</span>
+            <small class="module-meta">{{ module_info.title }}</small>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

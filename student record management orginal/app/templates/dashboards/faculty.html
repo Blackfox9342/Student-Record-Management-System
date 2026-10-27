@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Student University | Faculty Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-header mb-4">
+  <div>
+    <span class="eyebrow">Faculty Dashboard</span>
+    <h1 class="section-title mb-0">Teaching and assessment console</h1>
+    <p class="text-white-50 mb-0">Hello, {{ current_user.full_name }}. Manage attendance, marks, and faculty reports from the dashboard.</p>
+  </div>
+  <a class="btn btn-outline-light" href="{{ url_for('auth.logout') }}">Logout</a>
+</div>
+<div class="row g-4">
+  {% for label, value, meta in [('Assigned Subjects', '6', 'This semester'), ('Pending Attendance', '2', 'Classes today'), ('Marks to Enter', '14', 'Assessments'), ('Defaulters', '8', 'At risk')] %}
+    <div class="col-md-6 col-xl-3">
+      <div class="surface-card h-100">
+        <small>{{ label }}</small>
+        <h3 class="mt-2">{{ value }}</h3>
+        <p class="text-white-50 mb-0">{{ meta }}</p>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+<div class="row g-4 mt-1">
+  <div class="col-lg-6">
+    <div class="glass-panel h-100">
+      <div class="panel-header flex-wrap">
+        <h2 class="h5 mb-0">Today's classes</h2>
+        <a class="btn btn-sm btn-outline-light" href="{{ url_for('main.faculty_class_list_pdf') }}">Download class list</a>
+      </div>
+      <div class="timeline">
+        {% for time, subject, section, students in classes_today %}
+          <div class="timeline-item">
+            <i class="bi bi-clock"></i>
+            <span>{{ time }} - {{ subject }} · {{ section }}</span>
+            <small>{{ students }}</small>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="glass-panel h-100">
+      <div class="panel-header mb-3">
+        <h2 class="h5 mb-0">Quick actions</h2>
+      </div>
+      <div class="quick-links-grid">
+        {% for module in quick_modules[:4] %}
+          <a class="action-card action-link" href="{{ url_for('main.module_detail', role='faculty', module_slug=module.slug) }}">{{ module.title }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row g-4 mt-1">
+  <div class="col-lg-12">
+    <div class="glass-panel h-100">
+      <div class="panel-header mb-3">
+        <h2 class="h5 mb-0">Recommended actions</h2>
+      </div>
+      <div class="quick-links-grid three-col">
+        {% for module in quick_modules[4:8] %}
+          <a class="action-card action-link" href="{{ url_for('main.module_detail', role='faculty', module_slug=module.slug) }}">{{ module.title }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row g-4 mt-1">
+  <div class="col-lg-12">
+    <div class="glass-panel h-100">
+      <div class="panel-header mb-3">
+        <h2 class="h5 mb-0">All faculty options ({{ all_modules|length }})</h2>
+      </div>
+      <div class="quick-links-grid three-col">
+        {% for module in all_modules %}
+          <a class="action-card action-link" href="{{ url_for('main.module_detail', role='faculty', module_slug=module.slug) }}">
+            <span class="module-name">{{ module.title }}</span>
+            <small class="module-meta">{{ module.status }}</small>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

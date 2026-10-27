@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Student University | Access Denied{% endblock %}
+{% block content %}
+<div class="text-center py-5">
+  <span class="eyebrow">Access Denied</span>
+  <h1 class="display-5 fw-bold mt-3">You do not have permission to view this page.</h1>
+  <p class="text-white-50 mt-3">Return to the home page or sign in with the appropriate role.</p>
+  <a href="{{ url_for('main.home') }}" class="btn btn-primary btn-lg mt-2">Go Home</a>
+</div>
+{% endblock %}

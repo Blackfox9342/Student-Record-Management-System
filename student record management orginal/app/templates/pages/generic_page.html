@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Student University | {{ page_title }}{% endblock %}
+{% block content %}
+<div class="glass-panel">
+  <span class="eyebrow">Student University</span>
+  <h1 class="section-title mb-3">{{ page_heading }}</h1>
+  <p class="text-white-50 mb-4">{{ page_description }}</p>
+  <div class="quick-links-grid three-col">
+    <a class="action-card action-link" href="{{ url_for('main.home') }}">Home</a>
+    <a class="action-card action-link" href="{{ url_for('auth.logout') }}">Logout</a>
+    <a class="action-card action-link" href="{{ request.referrer or url_for('main.home') }}">Back</a>
+  </div>
+</div>
+{% endblock %}

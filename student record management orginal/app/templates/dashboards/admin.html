@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Student University | Admin Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-header mb-4">
+  <div>
+    <span class="eyebrow">Admin Dashboard</span>
+    <h1 class="section-title mb-0">Institution overview</h1>
+    <p class="text-white-50 mb-0">Monitor students, faculty, records, and audit trails from a clean operations board.</p>
+  </div>
+  <div class="dashboard-actions">
+    <a class="btn btn-outline-light" href="{{ url_for('main.module_detail', role='admin', module_slug='student-master') }}">Student records</a>
+    <a class="btn btn-outline-light" href="{{ url_for('main.module_detail', role='admin', module_slug='faculty-master') }}">Faculty records</a>
+    <a class="btn btn-light" href="{{ url_for('main.admin_report_excel') }}">Download report</a>
+    <a class="btn btn-outline-light" href="{{ url_for('auth.logout') }}">Logout</a>
+  </div>
+</div>
+<div class="row g-4">
+  {% for label, value, icon in [('Students', '1,248', 'bi-people'), ('Faculty', '84', 'bi-person-workspace'), ('Programs', '18', 'bi-diagram-3'), ('Attendance', '96%', 'bi-patch-check')] %}
+    <div class="col-md-6 col-xl-3">
+      <div class="stat-card surface-card h-100">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <small>{{ label }}</small>
+            <h3>{{ value }}</h3>
+          </div>
+          <i class="bi {{ icon }}"></i>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+<div class="row g-4 mt-1">
+  <div class="col-lg-7">
+    <div class="glass-panel h-100">
+      <div class="panel-header flex-wrap">
+        <h2 class="h5 mb-0">Enrollment trend</h2>
+        <span class="status-pill">Chart.js</span>
+      </div>
+      <canvas id="adminTrendChart" height="140"></canvas>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="glass-panel h-100">
+      <div class="panel-header mb-3">
+        <h2 class="h5 mb-0">Recent activity</h2>
+        <a class="btn btn-sm btn-outline-light" href="{{ url_for('main.module_detail', role='admin', module_slug='audit-logs') }}">View logs</a>
+      </div>
+      <div class="activity-list">
+        <div class="activity-item"><span>New student batch imported</span><small>5 min ago</small></div>
+        <div class="activity-item"><span>Semester schedule published</span><small>19 min ago</small></div>
+        <div class="activity-item"><span>Marks approval completed</span><small>42 min ago</small></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row g-4 mt-1">
+  <div class="col-lg-12">
+    <div class="glass-panel h-100">
+      <div class="panel-header mb-3">
+        <h2 class="h5 mb-0">Admin shortcuts</h2>
+      </div>
+      <div class="quick-links-grid three-col">
+        {% for module in quick_modules %}
+          <a class="action-card action-link" href="{{ url_for('main.module_detail', role='admin', module_slug=module.slug) }}">
+            <span class="module-name">{{ module.title }}</span>
+            <small class="module-meta">{{ module.status }}</small>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row g-4 mt-1">
+  <div class="col-lg-12">
+    <div class="glass-panel h-100">
+      <div class="panel-header mb-3">
+        <h2 class="h5 mb-0">All admin options ({{ all_modules|length }})</h2>
+      </div>
+      <div class="quick-links-grid three-col">
+        {% for module in all_modules %}
+          <a class="action-card action-link" href="{{ url_for('main.module_detail', role='admin', module_slug=module.slug) }}">
+            <span class="module-name">{{ module.title }}</span>
+            <small class="module-meta">{{ module.status }}</small>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+  window.PRAKASH_CHART = {
+    adminTrend: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      data: [1100, 1150, 1172, 1210, 1235, 1248]
+    }
+  };
+</script>
+{% endblock %}
